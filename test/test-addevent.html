@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AddToCalendar — AddEvent Style Test</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            color: #333;
+        }
+        h1 { border-bottom: 2px solid #07ade0; padding-bottom: 10px; }
+        h2 { color: #07ade0; margin-top: 40px; }
+        .test-case {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #fafafa;
+        }
+        .detail-header {
+            position: relative;
+            min-height: 100px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .detail-header h3 { margin-top: 0; }
+    </style>
+</head>
+<body>
+
+<h1>AddToCalendar — AddEvent Icon Style</h1>
+<p>Tests the <code>style: 'addevent'</code> flag with icon-based dropdown layout.</p>
+
+<!-- ================================================================= -->
+<h2>Timed Event</h2>
+<!-- ================================================================= -->
+<div class="test-case">
+    <div class="detail-header">
+        <h3>Annual Company Retreat</h3>
+        <p>Date: Mar 15, 2026 9:00 AM &ndash; 5:00 PM</p>
+        <p>Location: 500 Conference Dr, Austin, TX 73301</p>
+
+        <div style="position: absolute; top: 50px; right: 10px;">
+            <a class="addthisevent" href="#">
+                Add to Calendar
+                <span class="_start">3/15/2026 9:00:00 AM</span>
+                <span class="_end">3/15/2026 5:00:00 PM</span>
+                <span class="_zonecode">11</span>
+                <span class="_summary">Annual Company Retreat</span>
+                <span class="_description">Join us for the annual company retreat. Please confirm your attendance.</span>
+                <span class="_location">500 Conference Dr, Austin, TX 73301</span>
+                <span class="_organizer"></span>
+                <span class="_organizer_email"></span>
+                <span class="_all_day_event">false</span>
+                <span class="_date_format">MM/DD/YYYY</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================= -->
+<h2>All-Day Event</h2>
+<!-- ================================================================= -->
+<div class="test-case">
+    <div style="padding: 15px; background: #fff; border: 1px solid #ccc; border-radius: 4px;">
+        <h3>Product Launch Day</h3>
+        <blockquote>Mar 20, 2026 — 500 Conference Dr, Austin, TX</blockquote>
+
+        <div style="padding-top: 15px; text-align: left;">
+            <a class="addthisevent" href="#" title="Add to Calendar">
+                Add to Calendar
+                <span class="_start">3/20/2026</span>
+                <span class="_end">3/20/2026</span>
+                <span class="_zonecode">11</span>
+                <span class="_summary">Product Launch Day</span>
+                <span class="_description">Mark your calendar for the product launch. Details to follow.</span>
+                <span class="_location">500 Conference Dr, Austin, TX 73301</span>
+                <span class="_organizer"></span>
+                <span class="_organizer_email"></span>
+                <span class="_all_day_event">true</span>
+                <span class="_date_format">MM/DD/YYYY</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Load the library -->
+<script src="../addtocalendar.js"></script>
+<script>
+    addthisevent.settings({
+        style: 'addevent',
+        iconPath: '../img/',
+        css: true,
+        facebook: { show: false }
+    });
+</script>
+
+</body>
+</html>

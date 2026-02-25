@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AddToCalendar — Test Fixture</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            color: #333;
+        }
+        h1 { border-bottom: 2px solid #07ade0; padding-bottom: 10px; }
+        h2 { color: #07ade0; margin-top: 40px; }
+        .test-case {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #fafafa;
+        }
+        .detail-header {
+            position: relative;
+            min-height: 100px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .detail-header h3 { margin-top: 0; }
+        .event-section {
+            padding: 15px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn { display: inline-block; padding: 8px 16px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; text-decoration: none; color: #333; margin: 4px; }
+        .btn:hover { background: #e0e0e0; }
+
+        /* === Use Case 3: Grid/modal custom CSS (css:false mode) === */
+        /* The app provides ALL styling. The dropdown is relative (pushes content)
+           and always visible (display:block !important). Show/hide is controlled
+           by the parent container toggle, not by clicking the anchor. */
+        #grid-test .addthisevent-drop {
+            width: 250px;
+            display: inline-block;
+            position: relative;
+            z-index: 999998;
+            background: #fff;
+            font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+            font-size: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        #grid-test .addthisevent_dropdown {
+            position: relative;
+            background: #fff;
+            text-align: left;
+            display: block !important;
+            border-radius: 8px;
+        }
+        #grid-test .addthisevent_dropdown span {
+            display: block;
+            line-height: 110%;
+            background: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            color: #07ade0;
+            cursor: pointer;
+            padding: 14px 18px 14px 17px;
+            border-bottom: 1px solid #eee;
+        }
+        #grid-test .addthisevent_dropdown span:hover {
+            background: #f4f4f4;
+            color: #6d84b4;
+        }
+        #grid-test .addthisevent_dropdown span:first-child {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        #grid-test .addthisevent_dropdown span:last-child {
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            border-bottom: none;
+        }
+        #grid-test .addthisevent span { display: none !important; }
+        #grid-test .addthisevent { display: none; }
+    </style>
+</head>
+<body>
+
+<h1>AddToCalendar — Test Fixture</h1>
+<p>Tests all use cases. Click "Add to Calendar" to open dropdowns.</p>
+
+<!-- ================================================================= -->
+<h2>Use Case 1: Timed Event</h2>
+<!-- ================================================================= -->
+<div class="test-case">
+    <div class="detail-header">
+        <h3>Annual Company Retreat</h3>
+        <p>Date: Mar 15, 2026 9:00 AM &ndash; 5:00 PM</p>
+        <p>Location: 500 Conference Dr, Austin, TX 73301</p>
+
+        <div style="position: absolute; top: 50px; right: 10px;">
+            <a class="addthisevent" href="#">
+                Add to Calendar
+                <span class="_start">3/15/2026 9:00:00 AM</span>
+                <span class="_end">3/15/2026 5:00:00 PM</span>
+                <span class="_zonecode">11</span>
+                <span class="_summary">Annual Company Retreat</span>
+                <span class="_description">Join us for the annual company retreat. Please confirm your attendance.</span>
+                <span class="_location">500 Conference Dr, Austin, TX 73301</span>
+                <span class="_organizer"></span>
+                <span class="_organizer_email"></span>
+                <span class="_all_day_event">false</span>
+                <span class="_date_format">MM/DD/YYYY</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================= -->
+<h2>Use Case 2: All-Day Event</h2>
+<!-- ================================================================= -->
+<div class="test-case">
+    <div class="event-section">
+        <h3>Product Launch Day</h3>
+        <blockquote>Mar 20, 2026 — 500 Conference Dr, Austin, TX</blockquote>
+
+        <div style="padding-top: 15px; text-align: left;">
+            <a class="addthisevent" href="#" title="Add to Calendar">
+                Add to Calendar
+                <span class="_start">3/20/2026</span>
+                <span class="_end">3/20/2026</span>
+                <span class="_zonecode">11</span>
+                <span class="_summary">Product Launch Day</span>
+                <span class="_description">Mark your calendar for the product launch. Details to follow.</span>
+                <span class="_location">500 Conference Dr, Austin, TX 73301</span>
+                <span class="_organizer"></span>
+                <span class="_organizer_email"></span>
+                <span class="_all_day_event">true</span>
+                <span class="_date_format">MM/DD/YYYY</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================= -->
+<h2>Use Case 3: Dynamic Content (Injected After Page Load)</h2>
+<!-- ================================================================= -->
+<div class="test-case" id="grid-test">
+    <p>Simulates dynamic content injection (e.g., a modal or SPA view). Click "Show Calendar" to reveal the widget, then call <code>refresh()</code>.</p>
+
+    <a class="btn" id="grid-show-btn">
+        &#x1F4C5; Show Calendar
+    </a>
+    <a class="btn" id="grid-hide-btn" style="display: none;">
+        &#x1F4C5; Hide Calendar
+    </a>
+
+    <div class="grid-calendar-container" style="display: none; margin-top: 15px;">
+        <!-- Injected dynamically to simulate SPA rendering -->
+    </div>
+
+    <script>
+        // Simulate dynamic template injection
+        document.addEventListener('DOMContentLoaded', function () {
+            var container = document.querySelector('.grid-calendar-container');
+            container.innerHTML =
+                '<a href="#" title="Add to Calendar" class="addthisevent">' +
+                    '<span class="_start">03/25/2026</span>' +
+                    '<span class="_end">03/25/2026</span>' +
+                    '<span class="_zonecode">11</span>' +
+                    '<span class="_summary">Quarterly Review Meeting</span>' +
+                    '<span class="_description">Quarterly review with the team. Agenda will be shared beforehand.</span>' +
+                    '<span class="_location">Remote / Video Call</span>' +
+                    '<span class="_organizer"></span>' +
+                    '<span class="_organizer_email"></span>' +
+                    '<span class="_all_day_event">true</span>' +
+                    '<span class="_date_format">MM/DD/YYYY</span>' +
+                '</a>';
+        });
+
+        // Toggle logic
+        var refresh_counter = 0;
+        document.addEventListener('DOMContentLoaded', function () {
+            var showBtn = document.getElementById('grid-show-btn');
+            var hideBtn = document.getElementById('grid-hide-btn');
+            var calDiv = document.querySelector('.grid-calendar-container');
+
+            showBtn.addEventListener('click', function () {
+                if (refresh_counter === 0) {
+                    addthisevent.refresh();
+                    refresh_counter++;
+                }
+                showBtn.style.display = 'none';
+                hideBtn.style.display = 'inline-block';
+                calDiv.style.display = 'block';
+            });
+
+            hideBtn.addEventListener('click', function () {
+                hideBtn.style.display = 'none';
+                calDiv.style.display = 'none';
+                showBtn.style.display = 'inline-block';
+            });
+        });
+    </script>
+</div>
+
+<!-- ================================================================= -->
+<h2>Use Case 4: Restricted Mode (All Providers Hidden)</h2>
+<!-- ================================================================= -->
+<div class="test-case" id="restricted-test">
+    <p>Demonstrates an empty dropdown when all providers are hidden. The anchor below has a tooltip on hover.</p>
+    <div style="margin-top: 10px;">
+        <a class="addthisevent-restricted" href="#"
+           title="Calendar feature unavailable">
+            Add to Calendar
+            <span class="_start">3/15/2026 9:00:00 AM</span>
+            <span class="_end">3/15/2026 5:00:00 PM</span>
+            <span class="_zonecode">11</span>
+            <span class="_summary">Restricted Event</span>
+            <span class="_description">This event is restricted.</span>
+            <span class="_location">N/A</span>
+            <span class="_organizer"></span>
+            <span class="_organizer_email"></span>
+            <span class="_all_day_event">false</span>
+            <span class="_date_format">MM/DD/YYYY</span>
+        </a>
+    </div>
+    <script>
+        // Restricted mode: uses a different class to avoid the global scan.
+        // In a real app, settings() would be called with show:false for all
+        // providers before the scan runs, producing an empty dropdown.
+        document.addEventListener('DOMContentLoaded', function () {
+            var anchor = document.querySelector('.addthisevent-restricted');
+            if (anchor) {
+                var spans = anchor.querySelectorAll('span[class^="_"]');
+                for (var i = 0; i < spans.length; i++) {
+                    spans[i].style.display = 'none';
+                }
+            }
+        });
+    </script>
+</div>
+
+<!-- ================================================================= -->
+<h2>Dual Namespace Test</h2>
+<!-- ================================================================= -->
+<div class="test-case">
+    <p id="namespace-result">Checking...</p>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var el = document.getElementById('namespace-result');
+            var same = (window.addthisevent === window.addtocalendar);
+            var hasSettings = typeof window.addthisevent.settings === 'function';
+            var hasRefresh = typeof window.addthisevent.refresh === 'function';
+            el.textContent =
+                'window.addthisevent === window.addtocalendar: ' + same +
+                ' | settings(): ' + hasSettings +
+                ' | refresh(): ' + hasRefresh;
+            el.style.color = (same && hasSettings && hasRefresh) ? 'green' : 'red';
+        });
+    </script>
+</div>
+
+<!-- Load the library -->
+<script src="../addtocalendar.js"></script>
+<script>
+    addthisevent.settings({
+        mouse: false,
+        css: true,
+        outlook:  { show: true, text: "Outlook Calendar" },
+        google:   { show: true, text: "Google Calendar" },
+        yahoo:    { show: true, text: "Yahoo Calendar" },
+        ical:     { show: true, text: "iCal Calendar" },
+        hotmail:  { show: true, text: "Hotmail Calendar" },
+        facebook: { show: false, text: "Facebook Calendar" }
+    });
+</script>
+
+</body>
+</html>
