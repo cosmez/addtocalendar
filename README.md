@@ -1,6 +1,6 @@
 # AddToCalendar
 
-Self-hosted, zero-dependency JavaScript replacement for AddThisEvent v1.5.8. Single file, 100% client-side, drop-in replacement requiring only a `<script src>` swap.
+Self-hosted, zero-dependency JavaScript replacement for AddThisEvent. Single file, 100% client-side, drop-in replacement requiring only a `<script src>` swap.
 
 ## Features
 
