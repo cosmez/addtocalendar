@@ -90,6 +90,109 @@
     </div>
 </div>
 
+<!-- ================================================================= -->
+<h2>Dynamic Content — Push Down (css:false)</h2>
+<!-- ================================================================= -->
+<div class="test-case" id="grid-test">
+    <p>Simulates <code>css:false</code> mode where the app provides all CSS. The dropdown pushes content down (<code>position:relative</code>) and is always visible when the container is shown.</p>
+
+    <style>
+        #grid-test .addthisevent-drop {
+            width: 250px;
+            display: inline-block;
+            position: relative;
+            z-index: 999998;
+            background: #fff;
+            font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+            font-size: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        #grid-test .addthisevent_dropdown {
+            position: relative;
+            background: #fff;
+            text-align: left;
+            display: block !important;
+            border-radius: 8px;
+        }
+        #grid-test .addthisevent_dropdown span {
+            background: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+        }
+        #grid-test .addthisevent_dropdown span:hover {
+            background: #f4f4f4;
+        }
+        #grid-test .addthisevent_dropdown span:first-child {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+        #grid-test .addthisevent_dropdown span:last-child {
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            border-bottom: none;
+        }
+        #grid-test .addthisevent span { display: none !important; }
+        #grid-test .addthisevent { display: none; }
+        #grid-test .btn { display: inline-block; padding: 8px 16px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; text-decoration: none; color: #333; margin: 4px; }
+        #grid-test .btn:hover { background: #e0e0e0; }
+    </style>
+
+    <a class="btn" id="grid-show-btn">&#x1F4C5; Show Calendar</a>
+    <a class="btn" id="grid-hide-btn" style="display: none;">&#x1F4C5; Hide Calendar</a>
+
+    <div class="grid-calendar-container" style="display: none; margin-top: 15px;">
+    </div>
+
+    <p style="margin-top: 15px; color: #666;">Content below the dropdown should be pushed down, not overlapped.</p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var container = document.querySelector('#grid-test .grid-calendar-container');
+            container.innerHTML =
+                '<a href="#" title="Add to Calendar" class="addthisevent">' +
+                    '<span class="_start">03/25/2026</span>' +
+                    '<span class="_end">03/25/2026</span>' +
+                    '<span class="_zonecode">11</span>' +
+                    '<span class="_summary">Quarterly Review Meeting</span>' +
+                    '<span class="_description">Quarterly review with the team.</span>' +
+                    '<span class="_location">Remote / Video Call</span>' +
+                    '<span class="_organizer"></span>' +
+                    '<span class="_organizer_email"></span>' +
+                    '<span class="_all_day_event">true</span>' +
+                    '<span class="_date_format">MM/DD/YYYY</span>' +
+                '</a>';
+        });
+
+        var refresh_counter = 0;
+        document.addEventListener('DOMContentLoaded', function () {
+            var showBtn = document.getElementById('grid-show-btn');
+            var hideBtn = document.getElementById('grid-hide-btn');
+            var calDiv = document.querySelector('#grid-test .grid-calendar-container');
+
+            showBtn.addEventListener('click', function () {
+                if (refresh_counter === 0) {
+                    addthisevent.refresh();
+                    refresh_counter++;
+                }
+                showBtn.style.display = 'none';
+                hideBtn.style.display = 'inline-block';
+                calDiv.style.display = 'block';
+            });
+
+            hideBtn.addEventListener('click', function () {
+                hideBtn.style.display = 'none';
+                calDiv.style.display = 'none';
+                showBtn.style.display = 'inline-block';
+            });
+        });
+    </script>
+</div>
+
 <!-- Load the library -->
 <script src="../addtocalendar.js"></script>
 <script>

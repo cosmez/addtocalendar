@@ -510,11 +510,20 @@
 
                 var span = document.createElement('span');
                 span.setAttribute('data-provider', prov.key);
+                // Inline styles guarantee correct layout even when css:false
+                span.style.display = 'flex';
+                span.style.alignItems = 'center';
 
                 var img = document.createElement('img');
                 img.src = _config.iconPath + prov.icon;
                 img.alt = '';
                 img.className = 'addthisevent-icon';
+                img.setAttribute('width', '20');
+                img.setAttribute('height', '20');
+                img.style.width = '20px';
+                img.style.height = '20px';
+                img.style.marginRight = '12px';
+                img.style.flexShrink = '0';
                 span.appendChild(img);
 
                 span.appendChild(document.createTextNode(cfg.text + ' '));
@@ -522,6 +531,10 @@
                 if (prov.online) {
                     var em = document.createElement('em');
                     em.className = 'addthisevent-online';
+                    em.style.color = '#999';
+                    em.style.fontSize = '12px';
+                    em.style.fontStyle = 'normal';
+                    em.style.marginLeft = '4px';
                     em.textContent = '(online)';
                     span.appendChild(em);
                 }
@@ -547,9 +560,15 @@
         return dropdown;
     }
 
-    function attachClickHandler(anchor, dropdown) {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
+    function attachClickHandler(wrapper, anchor, dropdown) {
+        // Prevent anchor default navigation
+        anchor.addEventListener('click', function (e) { e.preventDefault(); });
+
+        // Toggle on wrapper click (covers icon, padding, and text)
+        wrapper.addEventListener('click', function (e) {
+            // Don't toggle if clicking inside the dropdown
+            if (dropdown.contains(e.target)) return;
+
             e.stopPropagation();
 
             // Toggle: if already open, close it
@@ -582,7 +601,7 @@
             var wrapper = wrapAnchor(anchor);
             var dropdown = buildDropdown(eventData);
             wrapper.appendChild(dropdown);
-            attachClickHandler(anchor, dropdown);
+            attachClickHandler(wrapper, anchor, dropdown);
 
             anchor.setAttribute('data-ate-processed', 'true');
         }
