@@ -50,6 +50,7 @@
     var _config = {
         mouse: false,
         css: true,
+        button: true,         // true = style wrapper as button; false = transparent wrapper
         style: 'default',    // 'default' or 'addevent' (icon-based layout)
         iconPath: 'img/',     // base path for provider icon SVGs (addevent style)
         outlook:   { show: true, text: 'Outlook Calendar' },
@@ -441,14 +442,22 @@
     }
 
     function wrapAnchor(anchor) {
-        // Don't re-wrap if already inside an addthisevent-drop
+        // Don't re-wrap if already inside an addthisevent-drop/wrap
         if (anchor.parentNode && anchor.parentNode.className &&
-            anchor.parentNode.className.indexOf('addthisevent-drop') !== -1) {
+            anchor.parentNode.className.indexOf('addthisevent-') !== -1) {
             return anchor.parentNode;
         }
 
         var wrapper = document.createElement('div');
-        wrapper.className = 'addthisevent-drop';
+
+        if (_config.button === false) {
+            // Transparent wrapper — no visual styling, preserves anchor layout
+            wrapper.className = 'addthisevent-wrap';
+            wrapper.style.position = 'relative';
+        } else {
+            wrapper.className = 'addthisevent-drop';
+        }
+
         anchor.parentNode.insertBefore(wrapper, anchor);
         wrapper.appendChild(anchor);
         return wrapper;
@@ -625,38 +634,46 @@
     function injectDefaultCSS() {
         if (_cssInjected) return;
 
-        // Inline SVG calendar icon (no external dependency)
-        var calIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect x='1' y='3' width='14' height='12' rx='1' fill='none' stroke='%23888' stroke-width='1.2'/%3E%3Cline x1='1' y1='6.5' x2='15' y2='6.5' stroke='%23888' stroke-width='1.2'/%3E%3Cline x1='4.5' y1='1.5' x2='4.5' y2='4.5' stroke='%23888' stroke-width='1.2' stroke-linecap='round'/%3E%3Cline x1='11.5' y1='1.5' x2='11.5' y2='4.5' stroke='%23888' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E";
-
         var css =
             '.addthisevent-drop{' +
                 'display:inline-block;' +
                 'position:relative;' +
                 'z-index:999998;' +
-                'font-family:arial,sans-serif;' +
-                "background:#f4f4f4 url(\"" + calIcon + "\") no-repeat 9px 50%;" +
-                'border:1px solid #d9d9d9;' +
-                'color:#555;' +
-                'font-weight:bold;' +
-                'font-size:14px;' +
-                'padding:9px 12px 8px 35px;' +
-                'border-radius:2px;' +
-                'cursor:pointer;' +
-                '-webkit-user-select:none;' +
-                '-moz-user-select:none;' +
-                '-ms-user-select:none;' +
-                'user-select:none;' +
-                'text-decoration:none;' +
-            '}' +
-            '.addthisevent-drop:hover{' +
-                'background-color:#e8e8e8;' +
-                'border-color:#ccc;' +
-            '}' +
-            '.addthisevent{' +
-                'color:#333 !important;' +
-                'text-decoration:none !important;' +
-                'cursor:pointer;' +
-            '}' +
+            '}';
+
+        if (_config.button !== false) {
+            // Inline SVG calendar icon (no external dependency)
+            var calIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect x='1' y='3' width='14' height='12' rx='1' fill='none' stroke='%23888' stroke-width='1.2'/%3E%3Cline x1='1' y1='6.5' x2='15' y2='6.5' stroke='%23888' stroke-width='1.2'/%3E%3Cline x1='4.5' y1='1.5' x2='4.5' y2='4.5' stroke='%23888' stroke-width='1.2' stroke-linecap='round'/%3E%3Cline x1='11.5' y1='1.5' x2='11.5' y2='4.5' stroke='%23888' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E";
+
+            css +=
+                '.addthisevent-drop{' +
+                    'font-family:arial,sans-serif;' +
+                    "background:#f4f4f4 url(\"" + calIcon + "\") no-repeat 9px 50%;" +
+                    'border:1px solid #d9d9d9;' +
+                    'color:#555;' +
+                    'font-weight:bold;' +
+                    'font-size:14px;' +
+                    'padding:9px 12px 8px 35px;' +
+                    'border-radius:2px;' +
+                    'cursor:pointer;' +
+                    '-webkit-user-select:none;' +
+                    '-moz-user-select:none;' +
+                    '-ms-user-select:none;' +
+                    'user-select:none;' +
+                    'text-decoration:none;' +
+                '}' +
+                '.addthisevent-drop:hover{' +
+                    'background-color:#e8e8e8;' +
+                    'border-color:#ccc;' +
+                '}' +
+                '.addthisevent{' +
+                    'color:#333 !important;' +
+                    'text-decoration:none !important;' +
+                    'cursor:pointer;' +
+                '}';
+        }
+
+        css +=
             '.addthisevent_dropdown{' +
                 'display:none;' +
                 'position:absolute;' +
@@ -696,9 +713,11 @@
                 'border-bottom-right-radius:8px;' +
                 'border-bottom:none;' +
             '}' +
-            '.addthisevent span{' +
-                'display:none !important;' +
-            '}' +
+            (_config.button !== false ?
+                '.addthisevent span{' +
+                    'display:none !important;' +
+                '}' : ''
+            ) +
             '.addthisevent-drop ._url,' +
             '.addthisevent-drop ._start,' +
             '.addthisevent-drop ._end,' +
@@ -760,6 +779,7 @@
 
         if (typeof config.mouse !== 'undefined') _config.mouse = config.mouse;
         if (typeof config.css !== 'undefined') _config.css = config.css;
+        if (typeof config.button !== 'undefined') _config.button = config.button;
         if (typeof config.style !== 'undefined') _config.style = config.style;
         if (typeof config.iconPath !== 'undefined') _config.iconPath = config.iconPath;
 

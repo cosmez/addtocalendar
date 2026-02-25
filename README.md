@@ -72,6 +72,7 @@ Requires SVG icons in the `iconPath` directory: `apple.svg`, `google.svg`, `offi
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `css` | boolean | `true` | Inject default stylesheet |
+| `button` | boolean | `true` | Style wrapper as a button (`false` = transparent wrapper, app styles the anchor) |
 | `mouse` | boolean | `false` | Mouse hover behavior |
 | `style` | string | `'default'` | `'default'` or `'addevent'` (icon layout) |
 | `iconPath` | string | `'img/'` | Base path to provider icon SVGs |
